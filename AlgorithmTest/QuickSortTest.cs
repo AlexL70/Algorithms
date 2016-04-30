@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Algorithms;
+using Algorithms.Sorting;
 
 namespace AlgorithmTest
 {

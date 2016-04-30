@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Algorithms
+namespace Algorithms.Sorting
 {
     public static class QuickSort<T>
         where T : IComparable<T>
