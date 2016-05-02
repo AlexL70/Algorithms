@@ -63,7 +63,7 @@ namespace Algorithms.DataStructures
         /// <summary>
         /// Pushes item to the stack.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">Item to be pushed.</param>
         public void Push(T item)
         {
             if (Count == _items.LongLength)
@@ -73,6 +73,13 @@ namespace Algorithms.DataStructures
             _items[_count++] = item;
         }
 
+        /// <summary>
+        /// Pops item from the stack.
+        /// </summary>
+        /// <returns>
+        /// Item of type T; the last one pushed to the stack. Throws
+        /// InvalidOperationException if stack is empty.
+        /// </returns>
         public T Pop()
         {
             if (IsEmpty)
@@ -84,6 +91,7 @@ namespace Algorithms.DataStructures
                 resize(_items.LongLength / 2);
             }
             T item = _items[--_count];
+            //  Set ref to null for ref types to let GC free memory
             _items[Count] = default(T);
             return item;
         }
