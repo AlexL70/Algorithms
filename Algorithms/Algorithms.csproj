@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractStack.cs" />
     <Compile Include="Bag.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Queue.cs" />

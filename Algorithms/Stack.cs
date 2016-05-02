@@ -10,11 +10,9 @@ namespace Algorithms.DataStructures
     /// of current capacity. Those operations may take considerable amount of time.
     /// </summary>
     /// <typeparam name="T">Type of item in stack.</typeparam>
-    public class Stack<T> : IStack<T>
+    public class Stack<T> : AbstractStack<T>, IStack<T>
     {
         private T[] _items;
-        private int _count;
-        private bool _isByRef = typeof(T).IsByRef;
 
         /// <summary>
         /// Default constructor. Sets capacity to 2 (items).
@@ -43,15 +41,6 @@ namespace Algorithms.DataStructures
             foreach (var item in collection)
                 Push(item);
         }
-        /// <summary>
-        /// Current count of items in stack.
-        /// </summary>
-        public int Count { get { return _count; } }
-        /// <summary>
-        /// Returns "true" if stack is empty.
-        /// </summary>
-        public bool IsEmpty { get { return Count == 0; } }
-        public bool IsReadOnly { get { return true; } }
 
         private void resize(int max)
         {
@@ -66,7 +55,7 @@ namespace Algorithms.DataStructures
         /// Pushes item to the stack.
         /// </summary>
         /// <param name="item">Item to be pushed.</param>
-        public void Push(T item)
+        public override void Push(T item)
         {
             if (Count == _items.Length)
             {
@@ -82,7 +71,7 @@ namespace Algorithms.DataStructures
         /// Item of type T; the last one pushed to the stack. Throws
         /// InvalidOperationException if stack is empty.
         /// </returns>
-        public T Peek()
+        public override T Peek()
         {
             if (IsEmpty)
             {
@@ -98,7 +87,7 @@ namespace Algorithms.DataStructures
         /// Item of type T; the last one pushed to the stack. Throws
         /// InvalidOperationException if stack is empty.
         /// </returns>
-        public T Pop()
+        public override T Pop()
         {
             T item = Peek();
             _count--;
@@ -115,7 +104,7 @@ namespace Algorithms.DataStructures
         /// <summary>
         /// Removes all objects from Stack<T>
         /// </summary>
-        public void Clear()
+        public override void Clear()
         {
             if (!IsEmpty)
             {
@@ -130,57 +119,6 @@ namespace Algorithms.DataStructures
                 resize(2);
             }
         }
-
-        /// <summary>
-        /// Determines whether an element is in the Stack<T>
-        /// </summary>
-        /// <param name="item">The object to locate in the Stack<T>.The value can be null for reference types.</param>
-        /// <returns>
-        /// Type: System.Boolean
-        /// true if item is found in the Stack<T>; otherwise, false.
-        /// </returns>
-        public bool Contains(T item)
-        {
-            for (int i = 0; i < _count; i++)
-            {
-                if (_items[i].Equals(item))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Copies the Stack<T> to an existing one-dimensional Array, starting at the specified array index.
-        /// </summary>
-        /// <param name="array"></param>
-        /// <param name="arrayIndex"></param>
-        public void CopyTo(Array array, int arrayIndex = 0)
-        {
-            if (array == null)
-            {
-                throw new ArgumentNullException("array is null.");
-            }
-            if (arrayIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException("arrayIndex is less then zero.");
-            }
-            if (arrayIndex + _count > array.Length)
-            {
-                throw new ArgumentException("The number of elements in the source Stack<T> is greater than the available space from arrayIndex to the end of the destination array.");
-            }
-
-            var i = arrayIndex;
-            foreach (var item in this)
-            {
-                array.SetValue( item, i);
-            }
-        }
-
-        bool ICollection.IsSynchronized { get { return false; } }
-
-        object ICollection.SyncRoot { get { return null; } }
 
         private class Enumerator<T> : IEnumerator<T>
         {
@@ -242,7 +180,7 @@ namespace Algorithms.DataStructures
             return GetEnumerator();
         }
 
-        public IEnumerator<T> GetEnumerator()
+        public override IEnumerator<T> GetEnumerator()
         {
             return new Enumerator<T>(this);
         }
