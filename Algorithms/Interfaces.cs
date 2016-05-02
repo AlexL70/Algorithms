@@ -84,7 +84,7 @@ namespace Algorithms.DataStructures
         //
         // Returns:
         //     The element in the collection at the current position of the enumerator.
-        T Current { get; }
+        new T Current { get; }
     }
 
     //
@@ -107,7 +107,7 @@ namespace Algorithms.DataStructures
         // Returns:
         //     A System.Collections.Generic.IEnumerator`1 that can be used to iterate through
         //     the collection.
-        IEnumerator<T> GetEnumerator();
+        new IEnumerator<T> GetEnumerator();
     }
 
     //
@@ -293,7 +293,7 @@ namespace Algorithms.DataStructures
 
     public interface IStack<T> : IEnumerable<T>, IEnumerable, ICollection, IReadOnlyCollection<T>
     {
-        int Count { get; }
+        new int Count { get; }
         bool IsEmpty { get; }
         void Push(T item);
         T Peek();

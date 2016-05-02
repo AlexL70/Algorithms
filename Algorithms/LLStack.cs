@@ -12,9 +12,9 @@ namespace Algorithms.DataStructures
     /// <typeparam name="T">Type of item in stack.</typeparam>
     public class LLStack<T> : AbstractStack<T>, IStack<T>
     {
-        private class Node<T> {
-            public T item;
-            public Node<T> next;
+        private class Node<U> {
+            public U item;
+            public Node<U> next;
         }
 
         private Node<T> _first;
@@ -99,18 +99,18 @@ namespace Algorithms.DataStructures
             _count = 0;
         }
 
-        private class Enumerator<T> : IEnumerator<T>
+        private class Enumerator<U> : IEnumerator<U>
         {
-            private LLStack<T>.Node<T> _current;
-            private LLStack<T> _outer;
+            private LLStack<U>.Node<U> _current;
+            private LLStack<U> _outer;
 
-            public Enumerator(LLStack<T> outer)
+            public Enumerator(LLStack<U> outer)
             {
                 _outer = outer;
                 _current = outer._first;
             }
 
-            public T Current
+            public U Current
             {
                 get
                 {

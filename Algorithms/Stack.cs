@@ -121,18 +121,18 @@ namespace Algorithms.DataStructures
             }
         }
 
-        private class Enumerator<T> : IEnumerator<T>
+        private class Enumerator<U> : IEnumerator<U>
         {
             private int _currIndex;
-            private Stack<T> _outer;
+            private Stack<U> _outer;
 
-            public Enumerator(Stack<T> outer)
+            public Enumerator(Stack<U> outer)
             {
                 _outer = outer;
                 _currIndex = outer.Count - 1;
             }
 
-            public T Current
+            public U Current
             {
                 get
                 {
