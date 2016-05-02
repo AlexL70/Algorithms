@@ -21,6 +21,13 @@ namespace AlgorithmTest
             st.Clear();
             Assert.IsTrue(st.IsEmpty);
         }
+        private void IntStackTestEmpty(IStack<int> st)
+        {
+            st.Push(1);
+            st.Pop();
+            var ex = Assert.Throws<InvalidOperationException>(() => st.Pop());
+            Assert.That(ex.Message, Is.EqualTo("The Stack<System.Int32> is empty."));
+        }
 
         [Test]
         public void Test_Stack_00()
@@ -30,13 +37,24 @@ namespace AlgorithmTest
         }
 
         [Test]
+        public void Test_LL_Stack_00()
+        {
+            LLStack<string> st = new LLStack<string>();
+            StringStackTest(st);
+        }
+
+        [Test]
         public void Test_Stack_Empty()
         {
             Stack<int> st = new Stack<int>();
-            st.Push(1);
-            st.Pop();
-            var ex = Assert.Throws<InvalidOperationException>(() => st.Pop());
-            Assert.That(ex.Message, Is.EqualTo("The Stack<System.Int32> is empty."));
+            IntStackTestEmpty(st);
+        }
+
+        [Test]
+        public void Test_LL_Stack_Empty()
+        {
+            LLStack<int> st = new LLStack<int>();
+            IntStackTestEmpty(st);
         }
     }
 }

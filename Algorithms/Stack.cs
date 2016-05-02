@@ -51,6 +51,7 @@ namespace Algorithms.DataStructures
                 _items[i] = temp[i];
             }
         }
+
         /// <summary>
         /// Pushes item to the stack.
         /// </summary>
@@ -75,7 +76,7 @@ namespace Algorithms.DataStructures
         {
             if (IsEmpty)
             {
-                throw new InvalidOperationException($"The Stack<{_items[0].GetType().ToString()}> is empty.");
+                throw new InvalidOperationException($"The Stack<{typeof(T)}> is empty.");
             }
             return _items[_count - 1]; ;
         }
