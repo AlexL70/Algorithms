@@ -19,6 +19,8 @@ namespace AlgorithmTest
             Assert.AreEqual(3, st.Count);
             Stack<string> st0 = new Stack<string>(st);
             Assert.AreEqual("to", st0.Pop());
+            st.Clear();
+            Assert.IsTrue(st.IsEmpty);
         }
 
         [Test]

@@ -10,10 +10,11 @@ namespace Algorithms.DataStructures
     /// of current capacity. Those operations may take considerable amount of time.
     /// </summary>
     /// <typeparam name="T">Type of item in stack.</typeparam>
-    public class Stack<T> : IEnumerable<T>, IEnumerable
+    public class Stack<T> : IStack<T>
     {
         private T[] _items;
-        private long _count;
+        private int _count;
+        private bool _isByRef = typeof(T).IsByRef;
 
         /// <summary>
         /// Default constructor. Sets capacity to 2 (items).
@@ -27,7 +28,7 @@ namespace Algorithms.DataStructures
         /// Constructor. Sets initial capacity to value passed.
         /// </summary>
         /// <param name="capacity">Initial capacity of stack.</param>
-        public Stack(long capacity)
+        public Stack(int capacity)
         {
             _count = 0;
             _items = new T[capacity];
@@ -45,17 +46,18 @@ namespace Algorithms.DataStructures
         /// <summary>
         /// Current count of items in stack.
         /// </summary>
-        public long Count { get { return _count; } }
+        public int Count { get { return _count; } }
         /// <summary>
         /// Returns "true" if stack is empty.
         /// </summary>
         public bool IsEmpty { get { return Count == 0; } }
+        public bool IsReadOnly { get { return true; } }
 
-        private void resize(long max)
+        private void resize(int max)
         {
             T[] temp = _items;
             _items = new T[max];
-            for (long i = 0; i < Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 _items[i] = temp[i];
             }
@@ -66,9 +68,9 @@ namespace Algorithms.DataStructures
         /// <param name="item">Item to be pushed.</param>
         public void Push(T item)
         {
-            if (Count == _items.LongLength)
+            if (Count == _items.Length)
             {
-                resize(_items.LongLength * 2);
+                resize(_items.Length * 2);
             }
             _items[_count++] = item;
         }
@@ -86,9 +88,9 @@ namespace Algorithms.DataStructures
             {
                 throw new InvalidOperationException($"The Stack<{_items[0].GetType().ToString()}> is empty.");
             }
-            if (Count <= _items.LongLength / 4)
+            if (Count <= _items.Length / 4)
             {
-                resize(_items.LongLength / 2);
+                resize(_items.Length / 2);
             }
             T item = _items[--_count];
             //  Set ref to null for ref types to let GC free memory
@@ -96,9 +98,79 @@ namespace Algorithms.DataStructures
             return item;
         }
 
+        /// <summary>
+        /// Removes all objects from Stack<T>
+        /// </summary>
+        public void Clear()
+        {
+            if (!IsEmpty)
+            {
+                if (_isByRef)
+                {
+                    for (int i = 0; i < _count; i++)
+                    {
+                        _items[i] = default(T);
+                    }
+                }
+                _count = 0;
+                resize(2);
+            }
+        }
+
+        /// <summary>
+        /// Determines whether an element is in the Stack<T>
+        /// </summary>
+        /// <param name="item">The object to locate in the Stack<T>.The value can be null for reference types.</param>
+        /// <returns>
+        /// Type: System.Boolean
+        /// true if item is found in the Stack<T>; otherwise, false.
+        /// </returns>
+        public bool Contains(T item)
+        {
+            for (int i = 0; i < _count; i++)
+            {
+                if (_items[i].Equals(item))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Copies the Stack<T> to an existing one-dimensional Array, starting at the specified array index.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="arrayIndex"></param>
+        public void CopyTo(Array array, int arrayIndex = 0)
+        {
+            if (array == null)
+            {
+                throw new ArgumentNullException("array is null.");
+            }
+            if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException("arrayIndex is less then zero.");
+            }
+            if (arrayIndex + _count > array.Length)
+            {
+                throw new ArgumentException("The number of elements in the source Stack<T> is greater than the available space from arrayIndex to the end of the destination array.");
+            }
+
+            var i = arrayIndex;
+            foreach (var item in this)
+            {
+                array.SetValue( item, i);
+            }
+        }
+
+        bool ICollection.IsSynchronized { get { return false; } }
+
+        object ICollection.SyncRoot { get { return null; } }
+
         private class Enumerator<T> : IEnumerator<T>
         {
-            private long _currIndex;
+            private int _currIndex;
             private Stack<T> _outer;
 
             public Enumerator(Stack<T> outer)
