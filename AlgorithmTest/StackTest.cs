@@ -1,4 +1,5 @@
-﻿using Algorithms.DataStructures;
+﻿using System;
+using Algorithms.DataStructures;
 using NUnit.Framework;
 
 namespace AlgorithmTest
@@ -18,6 +19,16 @@ namespace AlgorithmTest
             Assert.AreEqual(3, st.Count);
             Stack<string> st0 = new Stack<string>(st);
             Assert.AreEqual("to", st0.Pop());
+        }
+
+        [Test]
+        public void Test_Stack_Empty()
+        {
+            Stack<int> st = new Stack<int>();
+            st.Push(1);
+            st.Pop();
+            var ex = Assert.Throws<InvalidOperationException>(() => st.Pop());
+            Assert.That(ex.Message, Is.EqualTo("The Stack<System.Int32> is empty."));
         }
     }
 }

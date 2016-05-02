@@ -75,6 +75,10 @@ namespace Algorithms.DataStructures
 
         public T Pop()
         {
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException($"The Stack<{_items[0].GetType().ToString()}> is empty.");
+            }
             if (Count <= _items.LongLength / 4)
             {
                 resize(_items.LongLength / 2);
