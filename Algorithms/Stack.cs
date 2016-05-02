@@ -76,7 +76,23 @@ namespace Algorithms.DataStructures
         }
 
         /// <summary>
-        /// Pops item from the stack.
+        /// Return last added item without removint it from the stack;
+        /// </summary>
+        /// <returns>
+        /// Item of type T; the last one pushed to the stack. Throws
+        /// InvalidOperationException if stack is empty.
+        /// </returns>
+        public T Peek()
+        {
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException($"The Stack<{_items[0].GetType().ToString()}> is empty.");
+            }
+            return _items[_count - 1]; ;
+        }
+
+        /// <summary>
+        /// Remove last added item from the stack and then return it.
         /// </summary>
         /// <returns>
         /// Item of type T; the last one pushed to the stack. Throws
@@ -84,15 +100,13 @@ namespace Algorithms.DataStructures
         /// </returns>
         public T Pop()
         {
-            if (IsEmpty)
-            {
-                throw new InvalidOperationException($"The Stack<{_items[0].GetType().ToString()}> is empty.");
-            }
+            T item = Peek();
+            _count--;
+            //  Shrink array twice if it is four times larger than cound or items in Stack<T>
             if (Count <= _items.Length / 4)
             {
                 resize(_items.Length / 2);
             }
-            T item = _items[--_count];
             //  Set ref to null for ref types to let GC free memory
             _items[Count] = default(T);
             return item;

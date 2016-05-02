@@ -296,6 +296,8 @@ namespace Algorithms.DataStructures
         int Count { get; }
         bool IsEmpty { get; }
         void Push(T item);
+        T Peek();
         T Pop();
+        void Clear();
     }
 }
