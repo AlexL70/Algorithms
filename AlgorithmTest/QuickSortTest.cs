@@ -3,7 +3,7 @@ using Algorithms.Sorting;
 
 namespace AlgorithmTest
 {
-    [TestFixture, Category("Sorting")]
+    [TestFixture, Category(nameof(Algorithms.Sorting))]
     public class QuickSortTest
     {
         [Test]

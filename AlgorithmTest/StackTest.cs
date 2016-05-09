@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AlgorithmTest
 {
-    [TestFixture, Category("Data Structures")]
+    [TestFixture, Category(nameof(Algorithms.DataStructures))]
     class StackTest
     {
         private void StringStackTest(IStack<string> st)
@@ -28,6 +28,7 @@ namespace AlgorithmTest
             st.Clear();
             Assert.IsTrue(st.IsEmpty);
         }
+
         private void IntStackTestEmpty(IStack<int> st)
         {
             st.Push(1);

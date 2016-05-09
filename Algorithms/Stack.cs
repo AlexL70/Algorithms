@@ -109,15 +109,8 @@ namespace Algorithms.DataStructures
         {
             if (!IsEmpty)
             {
-                if (_isByRef)
-                {
-                    for (int i = 0; i < _count; i++)
-                    {
-                        _items[i] = default(T);
-                    }
-                }
+                _items = new T[2];
                 _count = 0;
-                resize(2);
             }
         }
 

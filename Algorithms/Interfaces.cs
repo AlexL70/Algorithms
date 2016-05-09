@@ -65,7 +65,6 @@ namespace Algorithms.DataStructures
         IEnumerator GetEnumerator();
     }
 
-
     //
     // Summary:
     //     Supports a simple iteration over a generic collection.
@@ -298,6 +297,16 @@ namespace Algorithms.DataStructures
         void Push(T item);
         T Peek();
         T Pop();
+        void Clear();
+    }
+
+    public interface IQueue<T> : IEnumerable<T>, IEnumerable, ICollection, IReadOnlyCollection<T>
+    {
+        new int Count { get; }
+        bool IsEmpty { get; }
+        void Enqueue(T item);
+        T Peek();
+        T Dequeue();
         void Clear();
     }
 }
