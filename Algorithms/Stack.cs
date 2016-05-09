@@ -3,7 +3,7 @@
 namespace Algorithms.DataStructures
 {
     /// <summary>
-    /// Classic implementation of Stack data type: "https://en.wikipedia.org/wiki/Stack_(abstract_data_type)"
+    /// Classic (resizing array) implementation of Stack data type: "https://en.wikipedia.org/wiki/Stack_(abstract_data_type)"
     /// This implementation is not for realtime applications.
     /// When pushing it increases capacity twice every time when it is not enough to hold next item.
     /// When popping it decreases capacity twice every time when items take only quater (or less)

@@ -5,7 +5,7 @@ namespace Algorithms.Sorting
     public static class QuickSort<T>
         where T : IComparable<T>
     {
-        private static void Swap(T[] arr, long i, long j)
+        private static void Swap(T[] arr, int i, int j)
         {
             if (arr == null)
             {
@@ -20,9 +20,9 @@ namespace Algorithms.Sorting
             arr[j] = temp;
         }
 
-        private static long ChoosePivotIndex(T[] arr, long left, long right)
+        private static int ChoosePivotIndex(T[] arr, int left, int right)
         {
-            long medium = (left + right) / 2;
+            int medium = (left + right) / 2;
             if (arr[left].CompareTo(arr[medium]) < 0 && arr[medium].CompareTo(arr[right]) < 0)
             {
                 return medium;
@@ -38,15 +38,15 @@ namespace Algorithms.Sorting
             }
         }
 
-        private static long Pivot(T[] arr, long first, long last, long pivotIndex)
+        private static int Pivot(T[] arr, int first, int last, int pivotIndex)
         {
             T pivot = arr[pivotIndex];
             if (first != pivotIndex)
             {
                 Swap(arr, first, pivotIndex);
             }
-            long less = first;
-            for (long scanned = first + 1; scanned <= last; scanned++)
+            int less = first;
+            for (int scanned = first + 1; scanned <= last; scanned++)
             {
                 if (arr[scanned].CompareTo(pivot) < 0)
                 {
@@ -64,16 +64,16 @@ namespace Algorithms.Sorting
             return less;
         }
 
-        public static long Sort( T[] arr, long left = 0, long right = -1)
+        public static int Sort( T[] arr, int left = 0, int right = -1)
         {
             if (right == -1 && left == 0)
             {
                 right = arr.Length - 1;
             }
-            long result = left < right ? right - left : 0;
+            int result = left < right ? right - left : 0;
             if (left < right + 1)
             {
-                long pivotInd = ChoosePivotIndex(arr, left, right);
+                int pivotInd = ChoosePivotIndex(arr, left, right);
                 pivotInd = Pivot(arr, left, right, pivotInd);
                 if (left < pivotInd - 1)
                 {
