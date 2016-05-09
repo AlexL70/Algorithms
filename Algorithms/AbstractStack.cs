@@ -56,7 +56,7 @@ namespace Algorithms.DataStructures
             {
                 throw new ArgumentOutOfRangeException("arrayIndex is less then zero.");
             }
-            if (arrayIndex + Count > array.Length)
+            if (arrayIndex + Count >= array.Length)
             {
                 throw new ArgumentException("The number of elements in the source Stack<T> is greater than the available space from arrayIndex to the end of the destination array.");
             }
@@ -65,6 +65,7 @@ namespace Algorithms.DataStructures
             foreach (var item in this)
             {
                 array.SetValue(item, i);
+                i++;
             }
         }
 

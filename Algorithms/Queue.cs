@@ -10,11 +10,10 @@ namespace Algorithms.DataStructures
     /// Those operations may take considerable amount of time.
     /// </summary>
     /// <typeparam name="T">Type of item in queue.</typeparam>
-    public class Queue<T> : IQueue<T>
+    public class Queue<T> : AbstractQueue<T>, IQueue<T>
     {
         private T[] _items;
         private int _first;
-        private int _count;
 
 
         /// <summary>
@@ -50,20 +49,6 @@ namespace Algorithms.DataStructures
             }
         }
 
-        /// <summary>
-        /// Current count of items in queue.
-        /// </summary>
-        public int Count { get { return _count; } }
-
-        /// <summary>
-        /// Returns "true" if queue is empty.
-        /// </summary>
-        public bool IsEmpty { get { return Count == 0; } }
-
-        public bool IsSynchronized { get { return false; } }
-
-        public object SyncRoot { get { return null; } }
-
         private void resize(int max)
         {
             var arr = new T[max];
@@ -79,7 +64,7 @@ namespace Algorithms.DataStructures
         /// Adds an object to the end of the Queue<T>.
         /// </summary>
         /// <param name="item">Element to add</param>
-        public void Enqueue(T item)
+        public override void Enqueue(T item)
         {
             if (_count == _items.Length)
             {
@@ -93,10 +78,14 @@ namespace Algorithms.DataStructures
         /// Removes and returns the object at the beginning of the Queue<T>.
         /// </summary>
         /// <returns>T</returns>
-        public T Dequeue()
+        public override T Dequeue()
         {
             var item = Peek();
-            _items[_first] = default(T);
+            if (_isByRef)
+            {
+                //  Free memory
+                _items[_first] = default(T);
+            }
             _first = (_first + 1) % _items.Length;
             _count--;
             if (_count <= _items.Length / 4)
@@ -110,7 +99,7 @@ namespace Algorithms.DataStructures
         /// Returns the object at the beginning of the Queue<T> without removing it.
         /// </summary>
         /// <returns>T</returns>
-        public T Peek()
+        public override T Peek()
         {
             if (IsEmpty)
             {
@@ -119,7 +108,7 @@ namespace Algorithms.DataStructures
             return _items[_first];
         }
 
-        public void Clear()
+        public override void Clear()
         {
             if (!IsEmpty)
             {
@@ -180,7 +169,7 @@ namespace Algorithms.DataStructures
             }
         }
 
-        public IEnumerator<T> GetEnumerator()
+        public override IEnumerator<T> GetEnumerator()
         {
             return new Enumerator(this);
         }
@@ -188,11 +177,6 @@ namespace Algorithms.DataStructures
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        public void CopyTo(Array array, int index)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -12,12 +12,12 @@ namespace Algorithms.DataStructures
     /// <typeparam name="T">Type of item in stack.</typeparam>
     public class LLStack<T> : AbstractStack<T>, IStack<T>
     {
-        private class Node<U> {
-            public U item;
-            public Node<U> next;
+        private class Node {
+            public T item;
+            public Node next;
         }
 
-        private Node<T> _first;
+        private Node _first;
 
         /// <summary>
         /// Default constructor.
@@ -47,7 +47,7 @@ namespace Algorithms.DataStructures
         /// <param name="item">Item to be pushed.</param>
         public override void Push(T item)
         {
-            var node = new Node<T> { item = item, next = _first };
+            var node = new Node { item = item, next = _first };
             _first = node;
             _count++;
         }
@@ -101,7 +101,7 @@ namespace Algorithms.DataStructures
 
         private class Enumerator<U> : IEnumerator<U>
         {
-            private LLStack<U>.Node<U> _current;
+            private LLStack<U>.Node _current;
             private LLStack<U> _outer;
 
             public Enumerator(LLStack<U> outer)

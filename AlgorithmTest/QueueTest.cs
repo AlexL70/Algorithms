@@ -37,6 +37,23 @@ namespace AlgorithmTest
             Assert.That(ex.Message, Is.EqualTo("The Queue<System.Int32> is empty."));
         }
 
+        private void IntQueueTestCopyTo(IQueue<int> q)
+        {
+            int[] arr = { 1, 2, 3, 4, 5 };
+            int[] arr_to_copy = new int[5];
+            arr_to_copy[0] = 1;
+            arr_to_copy[4] = 5;
+            q.Clear();
+            q.Enqueue(2);
+            q.Enqueue(3);
+            q.Enqueue(4);
+            q.CopyTo(arr_to_copy, 1);
+            Assert.AreEqual(arr, arr_to_copy);
+            q.Enqueue(6);
+            var ex = Assert.Throws<ArgumentException>(() => q.CopyTo(arr_to_copy, 1));
+            Assert.That(ex.Message, Is.EqualTo("The number of elements in the source Queue<T> is greater than the available space from arrayIndex to the end of the destination array."));
+        }
+
         [Test]
         public void Test_Queue_00()
         {
@@ -49,6 +66,34 @@ namespace AlgorithmTest
         {
             Queue<int> q = new Queue<int>();
             IntQueueTestEmpty(q);
+        }
+
+        [Test]
+        public void Test_Queue_CopyTo()
+        {
+            Queue<int> q = new Queue<int>();
+            IntQueueTestCopyTo(q);
+        }
+
+        [Test]
+        public void Test_LLQueue_00()
+        {
+            LLQueue<string> q = new LLQueue<string>();
+            StringQueueTest(q);
+        }
+
+        [Test]
+        public void Test_LLQueue_Empty()
+        {
+            LLQueue<int> q = new LLQueue<int>();
+            IntQueueTestEmpty(q);
+        }
+
+        [Test]
+        public void Test_LLQueue_CopyTo()
+        {
+            LLQueue<int> q = new LLQueue<int>();
+            IntQueueTestCopyTo(q);
         }
     }
 }

@@ -40,9 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractQueue.cs" />
     <Compile Include="AbstractStack.cs" />
     <Compile Include="Bag.cs" />
     <Compile Include="Interfaces.cs" />
+    <Compile Include="LLQueue.cs" />
     <Compile Include="LLStack.cs" />
     <Compile Include="Queue.cs" />
     <Compile Include="QuickSort.cs" />
