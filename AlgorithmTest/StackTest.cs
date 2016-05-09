@@ -1,6 +1,7 @@
 ﻿using System;
 using Algorithms.DataStructures;
 using NUnit.Framework;
+using System.Text;
 
 namespace AlgorithmTest
 {
@@ -16,6 +17,12 @@ namespace AlgorithmTest
             Assert.AreEqual("not", st.Peek());
             Assert.AreEqual("not", st.Pop());
             Assert.AreEqual(3, st.Count);
+            var sb = new StringBuilder();
+            foreach (string item in st)
+            {
+                sb.Append(item).Append(" ");
+            }
+            Assert.AreEqual("or be to ", sb.ToString());
             Stack<string> st0 = new Stack<string>(st);
             Assert.AreEqual("to", st0.Pop());
             st.Clear();

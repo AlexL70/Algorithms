@@ -107,7 +107,7 @@ namespace Algorithms.DataStructures
             public Enumerator(LLStack<U> outer)
             {
                 _outer = outer;
-                _current = outer._first;
+                _current = null;
             }
 
             public U Current
@@ -134,7 +134,12 @@ namespace Algorithms.DataStructures
 
             public bool MoveNext()
             {
-                if (_current?.next != null)
+                if (_current == null)
+                {
+                    _current = _outer._first;
+                    return true;
+                }
+                else if (_current?.next != null)
                 {
                     _current = _current.next;
                     return true;

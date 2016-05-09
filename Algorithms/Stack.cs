@@ -5,8 +5,8 @@ namespace Algorithms.DataStructures
     /// <summary>
     /// Classic (resizing array) implementation of Stack data type: "https://en.wikipedia.org/wiki/Stack_(abstract_data_type)"
     /// This implementation is not for realtime applications.
-    /// When pushing it increases capacity twice every time when it is not enough to hold next item.
-    /// When popping it decreases capacity twice every time when items take only quater (or less)
+    /// When pushing it increases capacity twice every time when it is not enough room to hold next item.
+    /// When popping it decreases capacity twice every time when items take only quarter (or less)
     /// of current capacity. Those operations may take considerable amount of time.
     /// </summary>
     /// <typeparam name="T">Type of item in stack.</typeparam>
@@ -129,7 +129,7 @@ namespace Algorithms.DataStructures
             public Enumerator(Stack<U> outer)
             {
                 _outer = outer;
-                _currIndex = outer.Count - 1;
+                _currIndex = outer.Count;
             }
 
             public U Current
@@ -172,7 +172,7 @@ namespace Algorithms.DataStructures
 
             public void Reset()
             {
-                _currIndex = _outer.Count - 1;
+                _currIndex = _outer.Count;
             }
         }
 
