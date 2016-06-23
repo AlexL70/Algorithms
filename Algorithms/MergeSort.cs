@@ -5,21 +5,21 @@ namespace Algorithms.Sorting
     public static class MergeSort<T>
         where T : IComparable<T>
     {
-        public static int Sort(T[] arr)
+        public static long Sort(T[] arr)
         {
-            int Inversions;
+            long Inversions;
             T[] copy1 = new T[arr.Length];
             Inversions = Sort(arr, copy1, 0, arr.Length - 1);
             copy1.CopyTo(arr, 0);
             return Inversions;
         }
 
-        private static int Sort(T[] src, T[] dest, int left, int right, int level = 1)
+        private static long Sort(T[] src, T[] dest, int left, int right, int level = 1)
         {
             if (left < right)
             {
                 var middle = left + (right - left) / 2;
-                var inv = Sort(dest, src, left, middle, level + 1);
+                long inv = Sort(dest, src, left, middle, level + 1);
                 inv += Sort(dest, src, middle + 1, right, level + 1);
                 inv += MergeAndCountInversions(src, dest, left, middle, right);
                 return inv;
@@ -32,9 +32,9 @@ namespace Algorithms.Sorting
             }
         }
 
-        private static int MergeAndCountInversions(T[] src, T[] dest, int left, int middle, int right)
+        private static long MergeAndCountInversions(T[] src, T[] dest, int left, int middle, int right)
         {
-            int inv = 0;
+            long inv = 0;
             int i = left;
             int j = middle + 1;
             for (int x = left; x <= right; x++)

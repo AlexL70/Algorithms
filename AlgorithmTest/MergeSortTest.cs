@@ -29,7 +29,7 @@ namespace AlgorithmTest
         public void TestMS_Inv()
         {
             int[] arr = { 1, 3, 5, 2, 4, 6 };
-            int inversions = MergeSort<int>.Sort(arr);
+            long inversions = MergeSort<int>.Sort(arr);
             int[] sorted = { 1, 2, 3, 4, 5, 6 };
             Assert.AreEqual(sorted, arr);
             Assert.AreEqual(3, inversions);
