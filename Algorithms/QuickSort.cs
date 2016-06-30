@@ -54,7 +54,8 @@ namespace Algorithms.Sorting
         private int CalcMedium(T[] arr, int left, int right)
         {
             int medium = (left + right) / 2;
-            if (arr[left].CompareTo(arr[medium]) < 0 && arr[medium].CompareTo(arr[right]) < 0)
+            if ((arr[left].CompareTo(arr[medium]) < 0 && arr[medium].CompareTo(arr[right]) < 0)
+            || (arr[right].CompareTo(arr[medium]) < 0 && arr[medium].CompareTo(arr[left]) < 0))
             {
                 return medium;
             }
