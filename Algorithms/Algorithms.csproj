@@ -43,15 +43,19 @@
     <Compile Include="DataStructures\AbstractQueue.cs" />
     <Compile Include="DataStructures\AbstractStack.cs" />
     <Compile Include="DataStructures\Bag.cs" />
+    <Compile Include="Graphs\UndirectedGraph.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="DataStructures\LLQueue.cs" />
     <Compile Include="DataStructures\LLStack.cs" />
+    <Compile Include="SelectionAndSearch\BinarySearch.cs" />
+    <Compile Include="SelectionAndSearch\RSelect.cs" />
     <Compile Include="Sorting\MergeSort.cs" />
     <Compile Include="DataStructures\Queue.cs" />
     <Compile Include="Sorting\QuickSort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataStructures\Stack.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
