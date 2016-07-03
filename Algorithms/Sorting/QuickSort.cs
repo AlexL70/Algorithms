@@ -2,8 +2,7 @@
 
 namespace Algorithms.Sorting
 {
-    public class QuickSort<T>
-        where T : IComparable<T>
+    public static class GQuickSort
     {
         public enum PivotChoice
         {
@@ -13,27 +12,7 @@ namespace Algorithms.Sorting
             ChooseRandom
         }
 
-        public QuickSort(PivotChoice choice = PivotChoice.ChooseRandom)
-        {
-            switch (choice)
-            {
-                case PivotChoice.AlwaysFirst:
-                    pivotIntFunc = (T[] arr, int left, int right) => left;
-                    break;
-                case PivotChoice.AlwaysLast:
-                    pivotIntFunc = (T[] arr, int left, int right) => right;
-                    break;
-                case PivotChoice.CalcMedium:
-                    pivotIntFunc = CalcMedium;
-                    break;
-                case PivotChoice.ChooseRandom:
-                    Random rnd = new Random();
-                    pivotIntFunc = (T[] arr, int left, int right) => rnd.Next(left, right);
-                    break;
-            }
-        }
-
-        private static void Swap(T[] arr, int i, int j)
+        private static void Swap<T>(T[] arr, int i, int j)
         {
             if (arr == null)
             {
@@ -48,10 +27,11 @@ namespace Algorithms.Sorting
             arr[j] = temp;
         }
 
-        private delegate int ChoosePivotIndex(T[] arr, int left, int right);
-        private ChoosePivotIndex pivotIntFunc;
+        private delegate int ChoosePivotIndex<T>(T[] arr, int left, int right)
+            where T : IComparable<T>;
 
-        private int CalcMedium(T[] arr, int left, int right)
+        private static int CalcMedium<T>(T[] arr, int left, int right)
+            where T : IComparable<T>
         {
             int medium = (left + right) / 2;
             if ((arr[left].CompareTo(arr[medium]) < 0 && arr[medium].CompareTo(arr[right]) < 0)
@@ -70,7 +50,8 @@ namespace Algorithms.Sorting
             }
         }
 
-        private int Pivot(T[] arr, int first, int last, int pivotIndex)
+        private static int Pivot<T>(T[] arr, int first, int last, int pivotIndex)
+            where T : IComparable<T>
         {
             T pivot = arr[pivotIndex];
             if (first != pivotIndex)
@@ -96,12 +77,32 @@ namespace Algorithms.Sorting
             return less;
         }
 
-        public int Sort( T[] arr, int left = 0, int right = -1)
+        public static int QuickSort<T>(this T[] arr, PivotChoice choice = PivotChoice.ChooseRandom)
+            where T : IComparable<T>
         {
-            if (right == -1 && left == 0)
+            ChoosePivotIndex<T> pivotIntFunc = CalcMedium;
+            switch (choice)
             {
-                right = arr.Length - 1;
+                case PivotChoice.AlwaysFirst:
+                    pivotIntFunc = (T[] ar, int left, int right) => left;
+                    break;
+                case PivotChoice.AlwaysLast:
+                    pivotIntFunc = (T[] ar, int left, int right) => right;
+                    break;
+                case PivotChoice.CalcMedium:
+                    pivotIntFunc = CalcMedium;
+                    break;
+                case PivotChoice.ChooseRandom:
+                    Random rnd = new Random();
+                    pivotIntFunc = (T[] ar, int left, int right) => rnd.Next(left, right);
+                    break;
             }
+            return Sort<T>(arr, 0, arr.Length - 1, pivotIntFunc);
+        }
+
+        private static int Sort<T>( T[] arr, int left, int right, ChoosePivotIndex<T> pivotIntFunc)
+            where T : IComparable<T>
+        {
             int result = left < right ? right - left : 0;
             if (left < right + 1)
             {
@@ -109,11 +110,11 @@ namespace Algorithms.Sorting
                 pivotInd = Pivot(arr, left, right, pivotInd);
                 if (left < pivotInd - 1)
                 {
-                    result += Sort(arr, left, pivotInd - 1);
+                    result += Sort<T>(arr, left, pivotInd - 1, pivotIntFunc);
                 }
                 if (pivotInd + 1 < right)
                 {
-                    result += Sort(arr, pivotInd + 1, right);
+                    result += Sort<T>(arr, pivotInd + 1, right, pivotIntFunc);
                 }
             }
             return result;

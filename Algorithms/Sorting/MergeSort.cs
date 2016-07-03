@@ -2,10 +2,10 @@
 
 namespace Algorithms.Sorting
 {
-    public static class MergeSort<T>
-        where T : IComparable<T>
+    public static class GMergeSort
     {
-        public static long Sort(T[] arr)
+        public static long MergeSort<T>(this T[] arr)
+            where T : IComparable<T>
         {
             long Inversions;
             T[] copy1 = new T[arr.Length];
@@ -14,7 +14,8 @@ namespace Algorithms.Sorting
             return Inversions;
         }
 
-        private static long Sort(T[] src, T[] dest, int left, int right, int level = 1)
+        private static long Sort<T>(T[] src, T[] dest, int left, int right, int level = 1)
+            where T : IComparable<T>
         {
             if (left < right)
             {
@@ -32,7 +33,8 @@ namespace Algorithms.Sorting
             }
         }
 
-        private static long MergeAndCountInversions(T[] src, T[] dest, int left, int middle, int right)
+        private static long MergeAndCountInversions<T>(T[] src, T[] dest, int left, int middle, int right)
+            where T : IComparable<T>
         {
             long inv = 0;
             int i = left;
