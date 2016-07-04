@@ -11,7 +11,7 @@ namespace Algorithms.SelectionAndSearch
     /// It implements binary search in sorted array.
     /// </summary>
     /// <typeparam name="T">Type of array elements.</typeparam>
-    public static class BinarySearch
+    public static class GBinarySearch
     {
         /// <summary>
         /// Method implements binary search in sorted array. Array passed to this method must be sorted.
@@ -21,10 +21,11 @@ namespace Algorithms.SelectionAndSearch
         /// <param name="inp">Sorted array to find value in.</param>
         /// <param name="el">Value to find.</param>
         /// <returns>Returns index of value in array. Returns -1 if value not found.</returns>
-        public static int BSearch<T>(this IReadOnlyList<T> inp, T el)
-             where T : IComparable<T>
+        public static int BinarySearch<T, K>(this IReadOnlyList<T> inp, K el)
+             where T : IComparable<K>
         {
-            if ( el.CompareTo(inp[0]) < 0 || el.CompareTo(inp[inp.Count - 1]) > 0)
+            //if ( el.CompareTo(inp[0]) < 0 || el.CompareTo(inp[inp.Count - 1]) > 0)
+            if (inp[0].CompareTo(el) > 0 || inp[inp.Count - 1].CompareTo(el) < 0)
             {
                 return -1;
             }
@@ -35,11 +36,11 @@ namespace Algorithms.SelectionAndSearch
                 while (min + 1 < max)
                 {
                     int mid = (min + max) / 2;
-                    if (el.CompareTo(inp[mid]) == 0)
+                    if (inp[mid].CompareTo(el) == 0)
                     {
                         return mid;
                     }
-                    else if (el.CompareTo(inp[mid]) < 0)
+                    else if (inp[mid].CompareTo(el) > 0)
                     {
                         max = mid;
                     }
@@ -48,9 +49,9 @@ namespace Algorithms.SelectionAndSearch
                         min = mid;
                     }
                 }
-                if (el.CompareTo(inp[min]) == 0)
+                if (inp[min].CompareTo(el) == 0)
                     return min;
-                if (el.CompareTo(inp[max]) == 0)
+                if (inp[max].CompareTo(el) == 0)
                     return max;
             }
             return -1;
