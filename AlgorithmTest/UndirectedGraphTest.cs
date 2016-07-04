@@ -21,5 +21,18 @@ namespace AlgorithmTest
             Assert.IsFalse(g.VertexExists(5));
             Assert.IsFalse(g.VertexExists(9));
         }
+
+        [Test]
+        public void UG_AddEdges()
+        {
+            var g = new UndirectedGraph<int>();
+            g.AddEdge(1, 2);
+            g.AddEdge(2, 3);
+            g.AddEdge(2, 4);
+            g.AddEdge(1, 3);
+            g.AddEdge(1, 4);
+            Assert.AreEqual(5, g.EdgesCount);
+            Assert.AreEqual(4, g.VerticesCount);
+        }
     }
 }
