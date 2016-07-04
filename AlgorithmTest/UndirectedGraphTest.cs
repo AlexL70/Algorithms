@@ -34,5 +34,30 @@ namespace AlgorithmTest
             Assert.AreEqual(5, g.EdgesCount);
             Assert.AreEqual(4, g.VerticesCount);
         }
+
+        [Test]
+        public void UG_Contraction()
+        {
+            var gr = new UndirectedGraph<int>();
+            gr.AddEdge(1, 2);
+            gr.AddEdge(1, 3);
+            gr.AddEdge(1, 4);
+            gr.AddEdge(2, 3);
+            gr.AddEdge(2, 4);
+            gr.AddEdge(2, 5);
+            gr.AddEdge(3, 4);
+            gr.AddEdge(4, 7);
+            gr.AddEdge(5, 6);
+            gr.AddEdge(5, 7);
+            gr.AddEdge(5, 8);
+            gr.AddEdge(6, 7);
+            gr.AddEdge(6, 8);
+            gr.AddEdge(7, 8);
+            Assert.AreEqual(8, gr.VerticesCount);
+            Assert.AreEqual(14, gr.EdgesCount);
+            var g = gr.Clone();
+            Assert.AreEqual(8, g.VerticesCount);
+            Assert.AreEqual(14, g.EdgesCount);
+        }
     }
 }

@@ -118,6 +118,16 @@ namespace Algorithms.Graphs
             _edges = new List<Edge>();
         }
 
+        public UndirectedGraph<TKey> Clone()
+        {
+            var g = new UndirectedGraph<TKey>();
+            foreach (var vertix in this._vertices)
+                g.AddVertex(vertix.Key);
+            foreach (var edge in this._edges)
+                g.AddEdge(edge.Min.Key, edge.Max.Key);
+            return g;
+        }
+
         public Vertex AddVertex(TKey key)
         {
             var v = GetVertex(key);
