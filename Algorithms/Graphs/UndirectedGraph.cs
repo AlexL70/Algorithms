@@ -174,11 +174,13 @@ namespace Algorithms.Graphs
             }
         }
 
-        public Vertex GetVertex(TKey key)
+        public Vertex GetVertex(TKey key, bool throwIfNotFound = false)
         {
             int ind = GetVertexIndex(key);
             if (ind >= 0)
                 return _vertices[ind];
+            else if (throwIfNotFound)
+                throw new Exception($"Vertex {key} not found.");
             else
                 return null;
         }
@@ -221,6 +223,63 @@ namespace Algorithms.Graphs
                 }
             }
             return index;
+        }
+
+        public void Contraction(TKey first, TKey second)
+        {
+            if (!EnforceOrder)
+                EnforceOrder = true;
+            Vertex min, max;
+            if (first.CompareTo(second) == 0)
+            {
+                throw new Exception($"Vertix {first} cannot be contracted with itself.");
+            }
+            else if (first.CompareTo(second) < 0)
+            {
+                min = GetVertex(first, true);
+                max = GetVertex(second, true);
+            }
+            else
+            {
+                max = GetVertex(first, true);
+                min = GetVertex(second, true);
+            }
+            var loopInd = GetEdgeIndex(first, second);
+            if (loopInd < 0)
+                throw new Exception($"Edge {{{first}, {second}}} not found.");
+            _edges.RemoveAt(loopInd);
+            var newEdges = new List<Edge>();
+            for (int i = 0; i < _edges.Count;)
+            {
+                if (_edges[i].Min.CompareTo(max) == 0)
+                {
+                    var replInd = GetEdgeIndex(min.Key, _edges[i].Max.Key);
+                    if (replInd >= 0)
+                        _edges[replInd]._weight += _edges[i]._weight;
+                    else
+                        newEdges.Add(new Edge(min, _edges[i].Max, _edges[i]._weight));
+                    _edges.RemoveAt(i);
+                }
+                else if (_edges[i].Max.CompareTo(max) == 0)
+                {
+                    var replInd = GetEdgeIndex(_edges[i].Min.Key, min.Key);
+                    if (replInd >= 0)
+                        _edges[replInd]._weight += _edges[i]._weight;
+                    else
+                        newEdges.Add(new Edge(_edges[i].Min, min, _edges[i]._weight));
+                    _edges.RemoveAt(i);
+                }
+                else
+                {
+                    i++;
+                }
+            }
+            foreach (var edge in newEdges)
+            {
+                _edges.Add(edge);
+            }
+            _edges.Sort();
+            _vertices.Remove(max);
         }
     }
 }
