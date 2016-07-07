@@ -36,7 +36,7 @@ namespace AlgorithmTest
             Assert.AreEqual(4, g.VerticesCount);
         }
 
-        private UndirectedGraph<int> DoubleConvert()
+        private UndirectedGraph<int> DoubleEnvelope()
         {
             var gr = new UndirectedGraph<int>();
             gr.AddEdge(1, 2);
@@ -57,9 +57,22 @@ namespace AlgorithmTest
         }
 
         [Test]
+        public void UG_Nearest()
+        {
+            Graph<int> gr = DoubleEnvelope();
+            int[] secondNearest = new int[4];
+            int index = 0;
+            foreach (var v in gr.Nearest(2))
+            {
+                secondNearest[index++] = v.Key;
+            }
+            Assert.AreEqual(new int[] { 1, 3, 4, 5 }, secondNearest);
+        }
+
+        [Test]
         public void UG_Contraction()
         {
-            var gr = DoubleConvert();
+            var gr = DoubleEnvelope();
             Assert.AreEqual(8, gr.VerticesCount);
             Assert.AreEqual(14, gr.EdgesCount);
             var g = gr.Clone();
@@ -82,7 +95,7 @@ namespace AlgorithmTest
         [Test]
         public void UG_MinContraction()
         {
-            var gr = DoubleConvert();
+            var gr = DoubleEnvelope();
             var g = gr.Clone();
             g.Contraction(1, 2);
             g.Contraction(1, 3);
@@ -114,7 +127,7 @@ namespace AlgorithmTest
         [Test]
         public void UG_RandomContraction()
         {
-            var gr = DoubleConvert();
+            var gr = DoubleEnvelope();
             int runCount = (int)Math.Pow(gr.VerticesCount, 3) *
                 (int)Math.Ceiling(Math.Log(gr.VerticesCount));
             uint minWeight = (uint)gr.VerticesCount;

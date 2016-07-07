@@ -204,5 +204,30 @@ namespace Algorithms.Graphs
         public abstract Edge AddEdge(TKey first, TKey second, uint weight = 1);
 
         public abstract void RemoveEdge(TKey first, TKey second);
+
+        public virtual IEnumerable<Vertex> Nearest(TKey key)
+        {
+            if (EnforceOrder)
+            {
+                var min = Tuple.Create(key, Vertices[0].Key);
+                var max = Tuple.Create(key, Vertices[Vertices.Count - 1].Key);
+                var minInd = Edges.BinarySearch(min, GBinarySearch.Option.EqOrGreater);
+                var maxInd = Edges.BinarySearch(max, GBinarySearch.Option.EqOrLess);
+                for (int i = minInd; i <= maxInd; i++)
+                {
+                    yield return Edges[i].Dest;
+                }
+            }
+            else
+            {
+                foreach (var e in Edges)
+                {
+                    if (e.Source.Key.CompareTo(key) == 0)
+                    {
+                        yield return e.Dest;
+                    }
+                }
+            }
+        }
     }
 }
