@@ -22,7 +22,7 @@ namespace Algorithms.SelectionAndSearch
              where T : IComparable<K>
         {
             //if ( el.CompareTo(inp[0]) < 0 || el.CompareTo(inp[inp.Count - 1]) > 0)
-            if (inp[0].CompareTo(el) > 0 || inp[inp.Count - 1].CompareTo(el) < 0)
+            if (inp.Count == 0 || (inp[0].CompareTo(el) > 0 || inp[inp.Count - 1].CompareTo(el) < 0))
             {
                 return -1;
             }
