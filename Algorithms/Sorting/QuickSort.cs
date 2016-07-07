@@ -94,7 +94,7 @@ namespace Algorithms.Sorting
                     break;
                 case PivotChoice.ChooseRandom:
                     Random rnd = new Random();
-                    pivotIntFunc = (T[] ar, int left, int right) => rnd.Next(left, right);
+                    pivotIntFunc = (T[] ar, int left, int right) => rnd.Next(left, right + 1);
                     break;
             }
             return Sort<T>(arr, 0, arr.Length - 1, pivotIntFunc);
