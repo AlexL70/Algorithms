@@ -51,6 +51,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="DirectedGraphTest.cs" />
     <Compile Include="MergeSortTest.cs" />
     <Compile Include="QueueTest.cs" />
     <Compile Include="QuickSortTest.cs" />

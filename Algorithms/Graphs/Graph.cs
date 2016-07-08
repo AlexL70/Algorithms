@@ -93,7 +93,7 @@ namespace Algorithms.Graphs
 
         protected List<Vertex> _vertices;
         protected List<Edge> _edges;
-        protected void CopyData(Graph<TKey> other)
+        protected virtual void CopyData(Graph<TKey> other)
         {
             foreach (var vertix in _vertices)
                 other._vertices.Add(vertix);
@@ -225,10 +225,11 @@ namespace Algorithms.Graphs
                 var max = Tuple.Create(key, Vertices[Vertices.Count - 1].Key);
                 var minInd = Edges.BinarySearch(min, GBinarySearch.Option.EqOrGreater);
                 var maxInd = Edges.BinarySearch(max, GBinarySearch.Option.EqOrLess);
-                for (int i = minInd; i <= maxInd; i++)
-                {
-                    yield return Edges[i].Dest;
-                }
+                if (minInd >= 0 && maxInd >= 0)
+                    for (int i = minInd; i <= maxInd; i++)
+                    {
+                        yield return Edges[i].Dest;
+                    }
             }
             else
             {
