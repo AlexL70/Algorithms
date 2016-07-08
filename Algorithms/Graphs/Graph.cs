@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Algorithms.SelectionAndSearch;
+using System.Linq;
 
 namespace Algorithms.Graphs
 {
@@ -10,6 +11,8 @@ namespace Algorithms.Graphs
         {
             private TKey _key;
             private Graph<TKey> _graph;
+            public bool Viewed { get; set; } = false;
+            public int SecondaryOrder { get; set; } = 0;
 
             protected internal Vertex(TKey key, Graph<TKey> graph)
             {
@@ -227,6 +230,55 @@ namespace Algorithms.Graphs
                         yield return e.Dest;
                     }
                 }
+            }
+        }
+
+        public delegate void ProcessVertex(Vertex v);
+
+        public void DepthFirstSearch(TKey key, ProcessVertex preProcess = null, ProcessVertex postProcess = null)
+        {
+            var v = GetVertex(key);
+            DataStructures.Stack<Vertex> vStack = new DataStructures.Stack<Vertex>();
+            v.Viewed = true;
+            vStack.Push(v);
+            preProcess?.Invoke(v);
+            while (!vStack.IsEmpty)
+            {
+                bool neighboursFound = false;
+                foreach (var vert in Nearest(vStack.Peek().Key).Where(vrt => !vrt.Viewed))
+                {
+                    neighboursFound = true;
+                    preProcess?.Invoke(vert);
+                    vert.Viewed = true;
+                    vStack.Push(vert);
+                    break;
+                }
+                if (!neighboursFound)
+                {
+                    var vert = vStack.Pop();
+                    postProcess?.Invoke(vert);
+                    vert.Viewed = true;
+                }
+            }
+        }
+
+        public void BreadthFirstSearch(TKey key, ProcessVertex preProcess = null, ProcessVertex postProcess = null)
+        {
+            var v = GetVertex(key);
+            DataStructures.Queue<Vertex> vQueue = new DataStructures.Queue<Vertex>();
+            v.Viewed = true;
+            vQueue.Enqueue(v);
+            preProcess?.Invoke(v);
+            while (!vQueue.IsEmpty)
+            {
+                foreach (var vert in Nearest(vQueue.Peek().Key).Where(vrt => !vrt.Viewed))
+                {
+                    preProcess?.Invoke(vert);
+                    vert.Viewed = true;
+                    vQueue.Enqueue(vert);
+                }
+                v = vQueue.Dequeue();
+                postProcess?.Invoke(v);
             }
         }
     }

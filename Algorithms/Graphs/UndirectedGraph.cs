@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Algorithms.SelectionAndSearch;
 
 namespace Algorithms.Graphs
 {

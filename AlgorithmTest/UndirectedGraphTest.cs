@@ -70,6 +70,36 @@ namespace AlgorithmTest
         }
 
         [Test]
+        public void UG_BFS()
+        {
+            Graph<int> gr = DoubleEnvelope();
+            gr.EnforceOrder = true;
+            int[] secOrd = new int[] { 1, 2, 3, 4, 5, 7, 6, 8 };
+            int order = 0;
+            Graph<int>.ProcessVertex enumProc = (Graph<int>.Vertex v) => v.SecondaryOrder = ++order;
+            gr.BreadthFirstSearch(1, null, enumProc);
+            for (int i = 0; i < gr.VerticesCount; i++)
+            {
+                Assert.AreEqual(secOrd[i], gr.Vertices[i].SecondaryOrder);
+            }
+        }
+
+        [Test]
+        public void UG_DFS()
+        {
+            Graph<int> gr = DoubleEnvelope();
+            gr.EnforceOrder = true;
+            int[] secOrd = new int[] { 1, 2, 3, 4, 6, 7, 5, 8 };
+            int order = 0;
+            Graph<int>.ProcessVertex enumProc = (Graph<int>.Vertex v) => v.SecondaryOrder = ++order;
+            gr.DepthFirstSearch(1, enumProc, null);
+            for (int i = 0; i < gr.VerticesCount; i++)
+            {
+                Assert.AreEqual(secOrd[i], gr.Vertices[i].SecondaryOrder);
+            }
+        }
+
+        [Test]
         public void UG_Contraction()
         {
             var gr = DoubleEnvelope();
