@@ -11,10 +11,7 @@ namespace Algorithms.Graphs
         public UndirectedGraph<TKey> Clone()
         {
             var g = new UndirectedGraph<TKey>();
-            foreach (var vertix in this._vertices)
-                g._vertices.Add(vertix);
-            foreach (var edge in this._edges)
-                g._edges.Add(edge);
+            CopyData(g);
             return g;
         }
 

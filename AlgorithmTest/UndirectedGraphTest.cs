@@ -36,7 +36,7 @@ namespace AlgorithmTest
             Assert.AreEqual(4, g.VerticesCount);
         }
 
-        private UndirectedGraph<int> DoubleEnvelope()
+        private UndirectedGraph<int> DoubleEnvelope(bool enforceOrder = true)
         {
             var gr = new UndirectedGraph<int>();
             gr.AddEdge(1, 2);
@@ -53,6 +53,7 @@ namespace AlgorithmTest
             gr.AddEdge(6, 7);
             gr.AddEdge(6, 8);
             gr.AddEdge(7, 8);
+            gr.EnforceOrder = enforceOrder;
             return gr;
         }
 
@@ -88,7 +89,6 @@ namespace AlgorithmTest
         public void UG_DFS()
         {
             Graph<int> gr = DoubleEnvelope();
-            gr.EnforceOrder = true;
             int[] secOrd = new int[] { 1, 2, 3, 4, 6, 7, 5, 8 };
             int order = 0;
             Graph<int>.ProcessVertex enumProc = (Graph<int>.Vertex v) => v.SecondaryOrder = ++order;

@@ -93,6 +93,15 @@ namespace Algorithms.Graphs
 
         protected List<Vertex> _vertices;
         protected List<Edge> _edges;
+        protected void CopyData(Graph<TKey> other)
+        {
+            foreach (var vertix in _vertices)
+                other._vertices.Add(vertix);
+            foreach (var edge in _edges)
+                other._edges.Add(edge);
+            other._enforceOrder = _enforceOrder;
+        }
+
         public virtual IReadOnlyList<Vertex> Vertices { get { return _vertices; } }
         public virtual IReadOnlyList<Edge> Edges { get { return _edges; } }
         public virtual int VerticesCount { get { return _vertices.Count; } }
