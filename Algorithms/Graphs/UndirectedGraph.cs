@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Algorithms.Graphs
 {
@@ -7,6 +8,23 @@ namespace Algorithms.Graphs
         where TKey : IComparable<TKey>
     {
         public UndirectedGraph() : base() { }
+
+        public UndirectedGraph(Tuple<TKey, TKey>[] tArr) : base(tArr)
+        {
+            foreach (var t in tArr.Where(e => e.Item1.CompareTo(e.Item2) != 0)
+                .Select(e => new { Item1 = e.Item1, Item2 = e.Item2 })
+                .Union(tArr.Select(e => new { Item1 = e.Item2, Item2 = e.Item1}))
+                .GroupBy(e => new { e.Item1, e.Item2 }).Select(e => new {
+                first = e.First().Item1,
+                second = e.First().Item2,
+                weight = e.Count()
+            }))
+            {
+                _edges.Add(new Edge(GetVertex(t.first), GetVertex(t.second), t.weight));
+            }
+            _edges.Sort();
+            _eOrdered = true;
+        }
 
         public UndirectedGraph<TKey> Clone()
         {
@@ -17,7 +35,7 @@ namespace Algorithms.Graphs
 
         public override int EdgesCount { get { return _edges.Count / 2; } }
 
-        public override Edge AddEdge(TKey first, TKey second, uint weight = 1)
+        public override Edge AddEdge(TKey first, TKey second, int weight = 1)
         {
             var v0 = AddVertex(first);
             var v1 = AddVertex(second);
@@ -35,7 +53,7 @@ namespace Algorithms.Graphs
                 var edge1 = new Edge(v1, v0, weight);
                 _edges.Add(edge);
                 _edges.Add(edge1);
-                EnforceOrder = false;
+                _eOrdered = false;
                 return edge;
             }
         }
@@ -87,7 +105,7 @@ namespace Algorithms.Graphs
                     RemoveEdge(Edges[i].Source.Key, Edges[i].Dest.Key);
                     if (i > 0)
                         i--;
-                    else if(_edges.Count == 0)
+                    else if (_edges.Count == 0)
                         break;
                 }
                 else

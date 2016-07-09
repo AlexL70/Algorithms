@@ -36,9 +36,9 @@ namespace Algorithms.Graphs
         {
             protected internal Vertex _source;
             protected internal Vertex _dest;
-            protected internal uint _weight;
+            protected internal int _weight;
 
-            public Edge(Vertex first, Vertex second, uint weight = 1)
+            public Edge(Vertex first, Vertex second, int weight = 1)
             {
                 if (first.CompareTo(second) == 0)
                 {
@@ -82,13 +82,25 @@ namespace Algorithms.Graphs
 
             public Vertex Source { get { return _source; } }
             public Vertex Dest { get { return _dest; } }
-            public uint Weight { get { return _weight; } }
+            public int Weight { get { return _weight; } }
         }
 
         public Graph()
         {
             _vertices = new List<Vertex>();
             _edges = new List<Edge>();
+        }
+
+        public Graph(Tuple<TKey, TKey>[] tArr) : this()
+        {
+            foreach(var key in tArr.Select(e => e.Item1)
+                .Union(tArr.Select(e => e.Item2))
+                .GroupBy(i => i).Select(g => g.First()).AsEnumerable<TKey>())
+            {
+                _vertices.Add(new Vertex(key, this));
+            }
+            _vertices.Sort();
+            _vOrdered = true;
         }
 
         protected List<Vertex> _vertices;
@@ -99,7 +111,8 @@ namespace Algorithms.Graphs
                 other._vertices.Add(vertix);
             foreach (var edge in _edges)
                 other._edges.Add(edge);
-            other._enforceOrder = _enforceOrder;
+            other._eOrdered = _eOrdered;
+            other._vOrdered = _vOrdered;
         }
 
         public virtual IReadOnlyList<Vertex> Vertices { get { return _vertices; } }
@@ -107,18 +120,20 @@ namespace Algorithms.Graphs
         public virtual int VerticesCount { get { return _vertices.Count; } }
         public virtual int EdgesCount { get { return _edges.Count; } }
 
-        protected bool _enforceOrder;
+        protected bool _vOrdered;
+        protected bool _eOrdered;
+
         public virtual bool EnforceOrder
         {
-            get { return _enforceOrder; }
+            get { return _eOrdered && _vOrdered; }
             set
             {
-                _enforceOrder = value;
-                if (value)
-                {
+                if (value && !_vOrdered)
                     _vertices.Sort();
+                _vOrdered = value;
+                if (value && !_eOrdered)
                     _edges.Sort();
-                }
+                _eOrdered = value;
             }
         }
 
@@ -129,7 +144,7 @@ namespace Algorithms.Graphs
             {
                 v = new Vertex(key, this);
                 _vertices.Add(v);
-                EnforceOrder = false;
+                _vOrdered = false;
             }
             return v;
         }
@@ -151,7 +166,7 @@ namespace Algorithms.Graphs
 
         protected virtual int GetVertexIndex(TKey key)
         {
-            if (EnforceOrder)
+            if (_vOrdered)
             {
                 return _vertices.BinarySearch(key);
             }
@@ -183,7 +198,7 @@ namespace Algorithms.Graphs
         {
             int index = -1;
             var t = Tuple.Create(first, second);
-            if (EnforceOrder)
+            if (_eOrdered)
             {
                 index = _edges.BinarySearch(t);
             }
@@ -213,13 +228,13 @@ namespace Algorithms.Graphs
             }
         }
 
-        public abstract Edge AddEdge(TKey first, TKey second, uint weight = 1);
+        public abstract Edge AddEdge(TKey first, TKey second, int weight = 1);
 
         public abstract void RemoveEdge(TKey first, TKey second);
 
         public virtual IEnumerable<Vertex> Nearest(TKey key)
         {
-            if (EnforceOrder)
+            if (_eOrdered)
             {
                 var min = Tuple.Create(key, Vertices[0].Key);
                 var max = Tuple.Create(key, Vertices[Vertices.Count - 1].Key);

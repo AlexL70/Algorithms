@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Algorithms.Graphs
 {
@@ -8,6 +9,22 @@ namespace Algorithms.Graphs
     {
         public DirectedGraph() : base() { }
 
+        public DirectedGraph(Tuple<TKey, TKey>[] tArr) : base(tArr)
+        {
+            foreach (var t in tArr.Where(e => e.Item1.CompareTo(e.Item2) != 0)
+                .GroupBy(e => new { e.Item1, e.Item2 })
+                .Select(e => new {
+                first = e.First().Item1,
+                second = e.First().Item2,
+                weight = e.Count()
+            }))
+            {
+                _edges.Add(new Edge(GetVertex(t.first), GetVertex(t.second), t.weight));
+            }
+            _edges.Sort();
+            _eOrdered = true;
+        }
+
         public DirectedGraph<TKey> Clone()
         {
             var gr = new DirectedGraph<TKey>();
@@ -15,7 +32,7 @@ namespace Algorithms.Graphs
             return gr;
         }
 
-        public override Edge AddEdge(TKey first, TKey second, uint weight = 1)
+        public override Edge AddEdge(TKey first, TKey second, int weight = 1)
         {
             var v0 = AddVertex(first);
             var v1 = AddVertex(second);
@@ -29,7 +46,7 @@ namespace Algorithms.Graphs
             {
                 var edge = new Edge(v0, v1, weight);
                 _edges.Add(edge);
-                EnforceOrder = false;
+                _eOrdered = false;
                 return edge;
             }
         }
@@ -50,7 +67,7 @@ namespace Algorithms.Graphs
                 edge._source = edge._dest;
                 edge._dest = tmp;
             }
-            if (EnforceOrder)
+            if (_eOrdered)
             {
                 _edges.Sort();
             }

@@ -72,25 +72,28 @@ namespace AlgorithmTest
 
         private DirectedGraph<int> FourSCCs(bool enforceOrder = true)
         {
-            var gr = new DirectedGraph<int>();
-            gr.AddEdge(1, 2);
-            gr.AddEdge(2, 3);
-            gr.AddEdge(2, 11);
-            gr.AddEdge(3, 1);
-            gr.AddEdge(3, 4);
-            gr.AddEdge(3, 5);
-            gr.AddEdge(4, 5);
-            gr.AddEdge(5, 6);
-            gr.AddEdge(5, 7);
-            gr.AddEdge(5, 8);
-            gr.AddEdge(6, 7);
-            gr.AddEdge(6, 10);
-            gr.AddEdge(7, 4);
-            gr.AddEdge(8, 9);
-            gr.AddEdge(9, 10);
-            gr.AddEdge(10, 8);
-            gr.AddEdge(11, 8);
-            gr.AddEdge(11, 9);
+            Tuple<int, int>[] tArr = new Tuple<int, int>[]
+            {
+                Tuple.Create(1, 2),
+                Tuple.Create(2, 3),
+                Tuple.Create(2, 11),
+                Tuple.Create(3, 1),
+                Tuple.Create(3, 4),
+                Tuple.Create(3, 5),
+                Tuple.Create(4, 5),
+                Tuple.Create(5, 6),
+                Tuple.Create(5, 7),
+                Tuple.Create(5, 8),
+                Tuple.Create(6, 7),
+                Tuple.Create(6, 10),
+                Tuple.Create(7, 4),
+                Tuple.Create(8, 9),
+                Tuple.Create(9, 10),
+                Tuple.Create(10, 8),
+                Tuple.Create(11, 8),
+                Tuple.Create(11, 9)
+            };
+            var gr = new DirectedGraph<int>(tArr);
             return gr;
         }
 

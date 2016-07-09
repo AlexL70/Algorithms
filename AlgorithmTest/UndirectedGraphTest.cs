@@ -38,21 +38,24 @@ namespace AlgorithmTest
 
         private UndirectedGraph<int> DoubleEnvelope(bool enforceOrder = true)
         {
-            var gr = new UndirectedGraph<int>();
-            gr.AddEdge(1, 2);
-            gr.AddEdge(1, 3);
-            gr.AddEdge(1, 4);
-            gr.AddEdge(2, 3);
-            gr.AddEdge(2, 4);
-            gr.AddEdge(2, 5);
-            gr.AddEdge(3, 4);
-            gr.AddEdge(4, 7);
-            gr.AddEdge(5, 6);
-            gr.AddEdge(5, 7);
-            gr.AddEdge(5, 8);
-            gr.AddEdge(6, 7);
-            gr.AddEdge(6, 8);
-            gr.AddEdge(7, 8);
+            Tuple<int, int>[] arr = new Tuple<int, int>[]
+            {
+                Tuple.Create(1, 2),
+                Tuple.Create(1, 3),
+                Tuple.Create(1, 4),
+                Tuple.Create(2, 3),
+                Tuple.Create(2, 4),
+                Tuple.Create(2, 5),
+                Tuple.Create(3, 4),
+                Tuple.Create(4, 7),
+                Tuple.Create(5, 6),
+                Tuple.Create(5, 7),
+                Tuple.Create(5, 8),
+                Tuple.Create(6, 7),
+                Tuple.Create(6, 8),
+                Tuple.Create(7, 8)
+            };
+            var gr = new UndirectedGraph<int>(arr);
             gr.EnforceOrder = enforceOrder;
             return gr;
         }
@@ -158,9 +161,9 @@ namespace AlgorithmTest
         public void UG_RandomContraction()
         {
             var gr = DoubleEnvelope();
-            int runCount = (int)Math.Pow(gr.VerticesCount, 3) *
+            int runCount = (int)Math.Pow(gr.VerticesCount, 2) *
                 (int)Math.Ceiling(Math.Log(gr.VerticesCount));
-            uint minWeight = (uint)gr.VerticesCount;
+            int minWeight = gr.VerticesCount;
             for (int i = 0; i < runCount; i++)
             {
                 Random rnd = new Random((int)DateTime.Now.Ticks & (0x0000FFFF + i));
