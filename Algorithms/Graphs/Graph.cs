@@ -34,8 +34,8 @@ namespace Algorithms.Graphs
         }
         public class Edge : IComparable<Edge>, IComparable<Tuple<TKey, TKey>>
         {
-            private Vertex _source;
-            private Vertex _dest;
+            protected internal Vertex _source;
+            protected internal Vertex _dest;
             protected internal uint _weight;
 
             public Edge(Vertex first, Vertex second, uint weight = 1)

@@ -41,5 +41,57 @@ namespace Algorithms.Graphs
                 throw new Exception($"Edge {{{first}, {second}}} not found.");
             _edges.RemoveAt(loopInd);
         }
+
+        protected void ReverseEdges()
+        {
+            foreach (var edge in _edges)
+            {
+                var tmp = edge._source;
+                edge._source = edge._dest;
+                edge._dest = tmp;
+            }
+            if (EnforceOrder)
+            {
+                _edges.Sort();
+            }
+        }
+
+        public int FindStronglyConnectedComponents()
+        {
+            int componentsCount = 0;
+            //  1. Reverse edges before running Depth First Search first time
+            ReverseEdges();
+            EnforceOrder = true;
+            //  2. Run depth first search to create vertices list
+            //  in reversed finishing time order
+            var ftStack = new DataStructures.Stack<Vertex>();
+            for (int i = Vertices.Count - 1; i >= 0; i--)
+            {
+                if (!Vertices[i].Viewed)
+                {
+                    DepthFirstSearch(Vertices[i].Key, null, (Vertex v) => ftStack.Push(v));
+                }
+            }
+            //  Restore initial edges and viewed state before DFS second run
+            ReverseEdges();
+            foreach (var vertex in Vertices)
+            {
+                vertex.Viewed = false;
+            }
+            //  3. Finally run DFS in reverse finishing time order;
+            //  count strongly connected components and mark vertices
+            //  belonging to each component with component's number (secondary number)
+            while (!ftStack.IsEmpty) 
+            {
+                var vertex = ftStack.Pop();
+                if (!vertex.Viewed)
+                {
+                    componentsCount++;
+                    DepthFirstSearch(vertex.Key, 
+                        (Vertex v) => v.SecondaryOrder = componentsCount, null);
+                }
+            }
+            return componentsCount;
+        }
     }
 }

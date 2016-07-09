@@ -58,15 +58,39 @@ namespace AlgorithmTest
         private DirectedGraph<int> TwoRhombuses(bool enforceOrder = true)
         {
             var gr = new DirectedGraph<int>();
-            gr.AddEdge( 1, 2);
-            gr.AddEdge( 1, 3);
-            gr.AddEdge( 2, 4);
-            gr.AddEdge( 3, 4);
-            gr.AddEdge( 4, 5);
-            gr.AddEdge( 4, 6);
-            gr.AddEdge( 5, 7);
-            gr.AddEdge( 6, 7);
+            gr.AddEdge(1, 2);
+            gr.AddEdge(1, 3);
+            gr.AddEdge(2, 4);
+            gr.AddEdge(3, 4);
+            gr.AddEdge(4, 5);
+            gr.AddEdge(4, 6);
+            gr.AddEdge(5, 7);
+            gr.AddEdge(6, 7);
             gr.EnforceOrder = enforceOrder;
+            return gr;
+        }
+
+        private DirectedGraph<int> FourSCCs(bool enforceOrder = true)
+        {
+            var gr = new DirectedGraph<int>();
+            gr.AddEdge(1, 2);
+            gr.AddEdge(2, 3);
+            gr.AddEdge(2, 11);
+            gr.AddEdge(3, 1);
+            gr.AddEdge(3, 4);
+            gr.AddEdge(3, 5);
+            gr.AddEdge(4, 5);
+            gr.AddEdge(5, 6);
+            gr.AddEdge(5, 7);
+            gr.AddEdge(5, 8);
+            gr.AddEdge(6, 7);
+            gr.AddEdge(6, 10);
+            gr.AddEdge(7, 4);
+            gr.AddEdge(8, 9);
+            gr.AddEdge(9, 10);
+            gr.AddEdge(10, 8);
+            gr.AddEdge(11, 8);
+            gr.AddEdge(11, 9);
             return gr;
         }
 
@@ -108,6 +132,19 @@ namespace AlgorithmTest
             gr.DepthFirstSearch(1, enumProc, null);
             Assert.AreEqual(secOrd,
                 gr.Vertices.OrderBy(v => v.SecondaryOrder).Select(v => v.Key).ToArray());
+        }
+
+        [Test]
+        public void DG_SCC()
+        {
+            var gr = FourSCCs(false);
+            int sccCount = gr.FindStronglyConnectedComponents();
+            Assert.AreEqual(4, sccCount);
+            Assert.AreEqual(new int[] { 1, 2, 3, 4 },
+                gr.Vertices.GroupBy(v => v.SecondaryOrder)
+                .Select(g => g.First())
+                .OrderBy(v => v.SecondaryOrder)
+                .Select(v => v.SecondaryOrder).ToArray());
         }
     }
 }
