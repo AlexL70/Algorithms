@@ -43,6 +43,7 @@
     <Compile Include="DataStructures\AbstractQueue.cs" />
     <Compile Include="DataStructures\AbstractStack.cs" />
     <Compile Include="DataStructures\Bag.cs" />
+    <Compile Include="DataStructures\Heap.cs" />
     <Compile Include="Graphs\DirectedGraph.cs" />
     <Compile Include="Graphs\Graph.cs" />
     <Compile Include="Graphs\UndirectedGraph.cs" />

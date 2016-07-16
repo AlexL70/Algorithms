@@ -19,12 +19,7 @@ namespace Algorithms.DataStructures
         /// <summary>
         /// Default constructor. Sets capacity to 2 items.
         /// </summary>
-        public Queue()
-        {
-            _items = new T[2];
-            _first = 0;
-            _count = 0;
-        }
+        public Queue() : this(2) { }
 
         /// <summary>
         /// Constructor.
