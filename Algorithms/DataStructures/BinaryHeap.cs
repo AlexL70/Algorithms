@@ -5,12 +5,12 @@ using System.Runtime.CompilerServices;
 namespace Algorithms.DataStructures
 {
     /// <summary>
-    /// Classic Heap data structure implementation. 
-    /// https://en.wikipedia.org/wiki/Heap_(data_structure)
+    /// Classic binary heap data structure implementation. 
+    /// "https://en.wikipedia.org/wiki/Heap_(data_structure)"
     /// </summary>
     /// <typeparam name="T">Type of item in Heap. It must be ordered
     /// (support IComparable interface).</typeparam>
-    public class Heap<T> where T : IComparable<T>
+    public class BinaryHeap<T> where T : IComparable<T>
     {
         private T[] _items;
         private int _count;
@@ -21,14 +21,14 @@ namespace Algorithms.DataStructures
         /// <summary>
         /// Default contructor. Sets capacity to 2 items by default.
         /// </summary>
-        public Heap() : this(2, true) { }
+        public BinaryHeap() : this(2, true) { }
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="capacity">Initial capacity.</param>
         /// <param name="autoshrink">When true passed, Heap frees extra memory
         /// when extracting values.</param>
-        public Heap(int capacity = 2, bool autoshrink = true)
+        public BinaryHeap(int capacity = 2, bool autoshrink = true)
         {
             _items = new T[capacity];
             _count = 0;
@@ -38,7 +38,7 @@ namespace Algorithms.DataStructures
         /// Construction. Initializes heap with collection of elements.
         /// </summary>
         /// <param name="collection"></param>
-        public Heap(IEnumerable<T> collection, bool autoshrink = true) : this(2, autoshrink)
+        public BinaryHeap(IEnumerable<T> collection, bool autoshrink = true) : this(2, autoshrink)
         {
             foreach (var item in collection)
                 Insert(item);
@@ -145,6 +145,13 @@ namespace Algorithms.DataStructures
                     resize(Capacity / 2);
             }
             return min;
+        }
+
+        public T FindMin()
+        {
+            if (IsEmpty)
+                throw new IndexOutOfRangeException("Heap is empty.");
+            return _items[0];
         }
     }
 }

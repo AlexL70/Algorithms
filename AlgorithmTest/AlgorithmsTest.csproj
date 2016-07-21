@@ -52,7 +52,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DirectedGraphTest.cs" />
-    <Compile Include="HeapTest.cs" />
+    <Compile Include="BinaryHeapTest.cs" />
     <Compile Include="MergeSortTest.cs" />
     <Compile Include="QueueTest.cs" />
     <Compile Include="QuickSortTest.cs" />
