@@ -17,6 +17,12 @@ namespace Algorithms.DataStructures
         private bool _autoshrink;
         protected bool _isByRef = typeof(T).IsByRef;
 
+        public delegate void PostProcess(T element, int oldIndex, int newIndex);
+        /// <summary>
+        /// Assigned method is called at the end of method(s) moving elements inside heap
+        /// it allow, for instance, 
+        /// </summary>
+        public PostProcess postProcess { get; set; }
 
         /// <summary>
         /// Default contructor. Sets capacity to 2 items by default.
@@ -64,14 +70,16 @@ namespace Algorithms.DataStructures
         {
             T temp = _items[first];
             _items[first] = _items[second];
+            postProcess?.Invoke(_items[first], second, first);
             _items[second] = temp;
+            postProcess?.Invoke(_items[second], first, second);
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected int MinChildIndex(int index)
         {
             int left = LeftChildIndex(index);
             int right = RightChildIndex(index);
-            return _items[left].CompareTo(_items[right]) <= 0 || right >= _count ? left : right;
+            return right >= _count || _items[left].CompareTo(_items[right]) <= 0 ? left : right;
         }
         protected void BubbleUp(int index)
         {
@@ -123,6 +131,7 @@ namespace Algorithms.DataStructures
             if (Capacity == _count)
                 resize(Capacity * 2);
             _items[_count] = key;
+            postProcess?.Invoke(key, -1, _count);
             BubbleUp(_count++);
         }
         /// <summary>
@@ -132,26 +141,39 @@ namespace Algorithms.DataStructures
         /// <returns></returns>
         public T ExtractMin()
         {
+            T min = _items[0];
+            RemoveAt(0);
+            return min;
+        }
+
+        private void ThrowIfEmpty()
+        {
             if (IsEmpty)
                 throw new IndexOutOfRangeException("Heap is empty.");
-            T min = _items[0];
-            _items[0] = _items[--_count];
-            if (_isByRef)
-                _items[_count] = default(T);
-            if (Count > 0)
-            {
-                BubbleDown();
-                if (_autoshrink && _count <= Capacity / 4)
-                    resize(Capacity / 2);
-            }
-            return min;
         }
 
         public T FindMin()
         {
-            if (IsEmpty)
-                throw new IndexOutOfRangeException("Heap is empty.");
+            ThrowIfEmpty();
             return _items[0];
+        }
+
+        public void RemoveAt(int index)
+        {
+            ThrowIfEmpty();
+            if (index < 0 || index >= Count)
+            {
+                throw new IndexOutOfRangeException($"{index} index is out of bounds.");
+            }
+            Swap(index, --_count);
+            if (_isByRef)
+                _items[_count] = default(T);
+            if (Count > index)
+            {
+                BubbleDown(index);
+                if (_autoshrink && _count <= Capacity / 4)
+                    resize(Capacity / 2);
+            }
         }
     }
 }
