@@ -2,6 +2,8 @@
 using Algorithms.Graphs;
 using System;
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace AlgorithmTest
 {
@@ -151,25 +153,80 @@ namespace AlgorithmTest
         }
     }
 
-    [TestFixture, Category(nameof(Algorithms.Graphs))]
-    class DijksgraGraphTest
+    public class DijkstraTestData
     {
+        #region Dijkstra hardcoded test data
         private static Tuple<int, int, int>[] t1 = new Tuple<int, int, int>[]
         {
             Tuple.Create( 1, 2, 1 ),
             Tuple.Create( 1, 3, 4 ),
             Tuple.Create( 2, 3, 2 ),
-            Tuple.Create( 2, 4, 6 ),
+            Tuple.Create( 2, 4, 8 ),
             Tuple.Create( 3, 4, 3 )
         };
 
-        [Test]
-        public void DijkstraShortestPath_Test()
+        private static Tuple<int, int>[] t1_paths = new Tuple<int, int>[]
         {
-            var gr = new DijkstrasGraph<int>(t1);
+            Tuple.Create(1, 0),
+            Tuple.Create(2, 1),
+            Tuple.Create(3, 3),
+            Tuple.Create(4, 6)
+        };
+
+        private static Tuple<int, int, int>[] t2 = new Tuple<int, int, int>[]
+        {
+            Tuple.Create(1, 2, 2),
+            Tuple.Create(1, 3, 1),
+            Tuple.Create(2, 3, 1),
+            Tuple.Create(2, 4, 10),
+            Tuple.Create(2, 6, 1),
+            Tuple.Create(3, 4, 2),
+            Tuple.Create(3, 5, 3),
+            Tuple.Create(4, 5, 1),
+            Tuple.Create(4, 6, 10),
+            Tuple.Create(5, 7, 2),
+            Tuple.Create(6, 5, 3),
+            Tuple.Create(6, 7, 12)
+        };
+
+        private static Tuple<int, int>[] t2_paths = new Tuple<int, int>[]
+        {
+            Tuple.Create(1, 0),
+            Tuple.Create(2, 2),
+            Tuple.Create(3, 1),
+            Tuple.Create(4, 3),
+            Tuple.Create(5, 4),
+            Tuple.Create(6, 3),
+            Tuple.Create(7, 6),
+        };
+        #endregion
+        public static IEnumerable TestCases
+        {
+            get
+            {
+                yield return new TestCaseData( t1, t1_paths);
+                yield return new TestCaseData(t2, t2_paths);
+            }
+        }
+    }
+
+    [TestFixture, Category(nameof(Algorithms.Graphs))]
+    class DijksgraGraphTest
+    {
+
+        [Test, TestCaseSource(typeof(DijkstraTestData), nameof(DijkstraTestData.TestCases))]
+        public void DijkstraShortestPath_Test(Tuple<int, int, int>[] input, Tuple<int, int>[] output)
+        {
+            var gr = new DijkstrasGraph<int>(input);
+            gr.EnforceOrder = true;
             gr.CalcPathLen(1);
-            Assert.AreEqual(4, gr.Vertices[3].Key);
-            Assert.AreEqual(6, (gr.Vertices[3]).PathLen);
+            Tuple<int,int>[] pathLengths = new Tuple<int,int>[gr.VerticesCount];
+            for (int i = 0; i < gr.VerticesCount; i++)
+            {
+                var v = gr.Vertices[i];
+                pathLengths[i] = Tuple.Create(v.Key, v.PathLen);
+            }
+            Assert.AreEqual(output, pathLengths);
         }
     }
 }
