@@ -19,13 +19,13 @@ namespace Algorithms.Graphs
                 weight = e.Count()
             }))
             {
-                _edges.Add(new Edge(GetVertex(t.first), GetVertex(t.second), t.weight));
+                _edges.Add(NewEdge(GetVertex(t.first), GetVertex(t.second), t.weight));
             }
             _edges.Sort();
             _eOrdered = true;
         }
 
-        public DirectedGraph<TKey> Clone()
+        public virtual DirectedGraph<TKey> Clone()
         {
             var gr = new DirectedGraph<TKey>();
             CopyData(gr);
@@ -44,7 +44,7 @@ namespace Algorithms.Graphs
             }
             else
             {
-                var edge = new Edge(v0, v1, weight);
+                var edge = NewEdge(v0, v1, weight);
                 _edges.Add(edge);
                 _eOrdered = false;
                 return edge;

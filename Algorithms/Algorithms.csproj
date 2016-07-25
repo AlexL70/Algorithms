@@ -46,6 +46,7 @@
     <Compile Include="DataStructures\BinaryHeap.cs" />
     <Compile Include="Graphs\DirectedGraph.cs" />
     <Compile Include="Graphs\Graph.cs" />
+    <Compile Include="Graphs\DejkstrasGraph.cs" />
     <Compile Include="Graphs\UndirectedGraph.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="DataStructures\LLQueue.cs" />

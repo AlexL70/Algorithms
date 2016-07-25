@@ -13,7 +13,6 @@ namespace Algorithms.Graphs
             private Graph<TKey> _graph;
             public bool Viewed { get; set; } = false;
             public int SecondaryOrder { get; set; } = 0;
-
             protected internal Vertex(TKey key, Graph<TKey> graph)
             {
                 _key = key;
@@ -21,6 +20,7 @@ namespace Algorithms.Graphs
             }
 
             public TKey Key { get { return _key; } }
+            public Graph<TKey> Graph { get { return _graph; } }
 
             public int CompareTo(TKey other)
             {
@@ -37,8 +37,7 @@ namespace Algorithms.Graphs
             protected internal Vertex _source;
             protected internal Vertex _dest;
             protected internal int _weight;
-
-            public Edge(Vertex first, Vertex second, int weight = 1)
+            protected internal Edge(Vertex first, Vertex second, int weight = 1)
             {
                 if (first.CompareTo(second) == 0)
                 {
@@ -142,11 +141,16 @@ namespace Algorithms.Graphs
             var v = GetVertex(key);
             if (v == null)
             {
-                v = new Vertex(key, this);
+                v = NewVertex(key);
                 _vertices.Add(v);
                 _vOrdered = false;
             }
             return v;
+        }
+
+        protected virtual Vertex NewVertex(TKey key)
+        {
+            return new Vertex(key, this);
         }
 
         public virtual bool VertexExists(TKey key)
@@ -230,9 +234,14 @@ namespace Algorithms.Graphs
 
         public abstract Edge AddEdge(TKey first, TKey second, int weight = 1);
 
+        protected virtual Edge NewEdge(Vertex first, Vertex second, int weight = 1)
+        {
+            return new Edge(first, second, weight);
+        }
+
         public abstract void RemoveEdge(TKey first, TKey second);
 
-        public virtual IEnumerable<Vertex> Nearest(TKey key)
+        public virtual IEnumerable<Edge> Outgoing(TKey key)
         {
             if (_eOrdered)
             {
@@ -243,7 +252,7 @@ namespace Algorithms.Graphs
                 if (minInd >= 0 && maxInd >= 0)
                     for (int i = minInd; i <= maxInd; i++)
                     {
-                        yield return Edges[i].Dest;
+                        yield return Edges[i];
                     }
             }
             else
@@ -252,9 +261,16 @@ namespace Algorithms.Graphs
                 {
                     if (e.Source.Key.CompareTo(key) == 0)
                     {
-                        yield return e.Dest;
+                        yield return e;
                     }
                 }
+            }
+        }
+        public virtual IEnumerable<Vertex> Nearest(TKey key)
+        {
+            foreach (var e in Outgoing(key))
+            {
+                yield return e.Dest;
             }
         }
 

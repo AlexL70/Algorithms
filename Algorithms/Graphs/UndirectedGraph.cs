@@ -20,7 +20,7 @@ namespace Algorithms.Graphs
                 weight = e.Count()
             }))
             {
-                _edges.Add(new Edge(GetVertex(t.first), GetVertex(t.second), t.weight));
+                _edges.Add(NewEdge(GetVertex(t.first), GetVertex(t.second), t.weight));
             }
             _edges.Sort();
             _eOrdered = true;
@@ -49,8 +49,8 @@ namespace Algorithms.Graphs
             }
             else
             {
-                var edge = new Edge(v0, v1, weight);
-                var edge1 = new Edge(v1, v0, weight);
+                var edge = NewEdge(v0, v1, weight);
+                var edge1 = NewEdge(v1, v0, weight);
                 _edges.Add(edge);
                 _edges.Add(edge1);
                 _eOrdered = false;

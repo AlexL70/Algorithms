@@ -150,4 +150,26 @@ namespace AlgorithmTest
                 .Select(v => v.SecondaryOrder).ToArray());
         }
     }
+
+    [TestFixture, Category(nameof(Algorithms.Graphs))]
+    class DijksgraGraphTest
+    {
+        private static Tuple<int, int, int>[] t1 = new Tuple<int, int, int>[]
+        {
+            Tuple.Create( 1, 2, 1 ),
+            Tuple.Create( 1, 3, 4 ),
+            Tuple.Create( 2, 3, 2 ),
+            Tuple.Create( 2, 4, 6 ),
+            Tuple.Create( 3, 4, 3 )
+        };
+
+        [Test]
+        public void DijkstraShortestPath_Test()
+        {
+            var gr = new DijkstrasGraph<int>(t1);
+            gr.CalcPathLen(1);
+            Assert.AreEqual(4, gr.Vertices[3].Key);
+            Assert.AreEqual(6, (gr.Vertices[3]).PathLen);
+        }
+    }
 }
